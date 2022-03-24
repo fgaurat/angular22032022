@@ -3,6 +3,7 @@ import { TodoService } from 'src/app/todo.service';
 import { Observable,of } from 'rxjs';
 import { switchMap,filter, map,tap } from 'rxjs/operators';
 import { Todo } from '../../todo';
+import { MessageBusService } from 'src/app/message-bus.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -16,10 +17,15 @@ export class TodoListComponent implements OnInit {
   displayedColumns: string[] = ['id','title','completed','completed_chk','actions'];
 
   // todos:Todo[];
-  constructor(private todoService:TodoService) { }
+  constructor(private todoService:TodoService,private messageBus:MessageBusService) { }
+
+  loadTodos(){
+    this.todos$ = this.todoService.getTodos();
+  }
 
   ngOnInit(): void {
-    this.todos$ = this.todoService.getTodos();
+    this.loadTodos();
+    this.messageBus.bus$.subscribe(() => this.loadTodos());
     //this.todoService.getTodos().subscribe(todos => this.todos = todos);
   }
 

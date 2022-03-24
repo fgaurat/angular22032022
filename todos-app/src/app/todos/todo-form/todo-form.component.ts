@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActionType } from 'src/app/action-type';
+import { MessageBusService } from 'src/app/message-bus.service';
 import { Todo } from 'src/app/todo';
 import { TodoService } from 'src/app/todo.service';
 
@@ -15,15 +17,17 @@ export class TodoFormComponent implements OnInit {
     completed:false,
 
   }
-  constructor(private todoService:TodoService) { }
+  constructor(private todoService:TodoService,private messageBus:MessageBusService) { }
 
   ngOnInit(): void {
   }
 
   doSubmit(){
-    console.log("doSubmit")
     console.log(this.todo)
-    this.todoService.save(this.todo).subscribe()
+    this.todoService.save(this.todo).subscribe(() => {
+      const action = {type:ActionType.NEW_TODO}
+      this.messageBus.dispatch(action);
+    })
 
 
   }
