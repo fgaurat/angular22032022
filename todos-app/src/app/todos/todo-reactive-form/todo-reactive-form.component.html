@@ -1,1 +1,19 @@
-<p>todo-reactive-form works!</p>
+<form [formGroup]="todoForm" (ngSubmit)="doSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="todoTitle"  id="">
+    </mat-form-field>
+    
+
+
+    <div *ngIf="todoForm.get('todoTitle')?.invalid">
+        todoTitle invalid
+    </div>
+    <br>
+    <mat-checkbox formControlName="todoComplete" >Complete</mat-checkbox>
+    <br>
+    <button mat-flat-button [disabled]="todoForm.invalid" color="primary" type="submit">ok</button>
+
+  
+</form>
+  

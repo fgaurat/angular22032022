@@ -37,8 +37,9 @@ export class TodoListComponent implements OnInit {
     this.todos$ = this.todoService.delete(todo).pipe(
       switchMap(() => this.todoService.getTodos())
     )
+
     // this.todos$ = this.todoService.delete(todo).pipe(
-    //   tap((d:any) => console.log(d)),
+    //   // tap((d:any) => console.log(d)),
     //   switchMap(() => this.todos$),
     //   tap((todos:Todo[]) => console.log(todos)),
     //   // map( (todos:Todo[]) => todos.filter(t => t.id !== todo.id)),
