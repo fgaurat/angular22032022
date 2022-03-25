@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ActionType } from 'src/app/action-type';
+import { MessageBusService } from 'src/app/message-bus.service';
+import { Todo } from 'src/app/todo';
+import { TodoService } from 'src/app/todo.service';
 
 @Component({
   selector: 'app-todo-reactive-form',
@@ -11,7 +15,7 @@ export class TodoReactiveFormComponent implements OnInit {
     todoTitle:['',Validators.required],
     todoComplete:[false]
   });
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private todoService:TodoService,private messageBus:MessageBusService) { }
 
   ngOnInit(): void {
     this.todoForm.valueChanges.subscribe((formData:any) => {
@@ -20,7 +24,20 @@ export class TodoReactiveFormComponent implements OnInit {
   }
 
   doSubmit(){
-    console.log(this.todoForm)
+    const todo:Todo = {
+      title:this.todoForm.value.todoTitle,
+      completed:this.todoForm.value.todoComplete
+    }
+
+    console.log(todo) 
+    this.todoService.save(todo).subscribe(
+      ()=>this.messageBus.dispatch({type:ActionType.NEW_TODO})
+      )
+
+
+
+
+
     
 
   }

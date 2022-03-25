@@ -24,6 +24,8 @@ export class TodoFormComponent implements OnInit {
 
   doSubmit(){
     console.log(this.todo)
+    // const action = {type:ActionType.NEW_TODO,payload:this.todo}
+    // this.messageBus.dispatch(action);
     this.todoService.save(this.todo).subscribe(() => {
       const action = {type:ActionType.NEW_TODO}
       this.messageBus.dispatch(action);
